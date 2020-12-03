@@ -1,0 +1,27 @@
+{
+    "name": "ypa/api-connectors",
+    "description": "Lumen API package for requests to services",
+    "version": "1.0.0",
+    "type": "package",
+    "require": {
+        "php": "^7.3|^8.0",
+        "ext-json": "*",
+        "illuminate/support": "^8.17",
+        "psr/http-message": "^1.0",
+        "symfony/http-foundation": "^5.2",
+        "guzzlehttp/guzzle": "^7.2"
+    },
+    "require-dev": {},
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jos Koomen",
+            "email": "jos@yourpersonalagency.nl"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Ypa\\Api\\Connectors\\": "src/"
+        }
+    }
+}
