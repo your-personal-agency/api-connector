@@ -1,7 +1,7 @@
 {
     "name": "ypa/api-connectors",
     "description": "Lumen API package for requests to services",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "type": "package",
     "require": {
         "php": "^7.3|^8.0",
