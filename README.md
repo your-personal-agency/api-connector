@@ -1,4 +1,4 @@
 # api-connector
-Lumen Abstract API Connector
+YPA Lumen GlobalAPI Connectors
 
 Info to be written ;)
