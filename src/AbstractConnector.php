@@ -50,7 +50,17 @@ class AbstractConnector
 
     public function post(string $pUri, array $pOptions = []): array
     {
-        $query = $this->client()->post($pUri, $pOptions);
+        try {
+            $query = $this->client()->post($pUri, $pOptions);
+        } catch (BadRequestException $e) {
+            $data = [
+                'body' => $query->getBody()->getContents,
+                'trace' => $e->getTraceAsString(),
+                'stack' => $e->getTrace(),
+            ];
+            return $this->failedResponse($e->getMessage(), $e->getCode(), $data);
+        }
+
         return $this->response($query);
     }
 
@@ -62,6 +72,7 @@ class AbstractConnector
     public function addConfig(array $pConfig)
     {
         $this->setConfig(array_merge($this->config, $pConfig));
+        $this->client()->addConfig($pConfig);
     }
 
     /**
@@ -75,6 +86,7 @@ class AbstractConnector
             if ($pResponse->getStatusCode() === 200 || $pResponse->getStatusCode() === 201) {
                 $body = [];
                 $body['body'] = json_decode($pResponse->getBody()->getContents(), true) ?? [];
+                $body['headers'] = $pResponse->getHeaders() ?? [];
 
                 return $this->successResponse($body);
             } else {
@@ -85,7 +97,8 @@ class AbstractConnector
             }
         } catch (\Exception $e) {
             $data = [
-                'body' => $pResponse->getBody()->getContents,
+                'body' => $pResponse->getBody()->getContents() ?? [],
+                'headers' => $pResponse->getHeaders() ?? [],
                 'trace' => $e->getTraceAsString(),
                 'stack' => $e->getTrace(),
             ];
@@ -103,7 +116,8 @@ class AbstractConnector
         return [
             'success' => true,
             'status' => 200,
-            'data' => $pData['body']
+            'data' => $pData['body'],
+            'headers' => $pData['headers']
         ];
     }
 
